@@ -1,2 +1,46 @@
 # Netflix-Ads
 Block, Bypass, Filter Netflix Ads using AdGuard
+
+! -------------------------------------------------------------------------
+! NETFLIX SAFE MODE (AdGuard Home / DNS) — UPDATED 2025-11-13
+! Goal: Keep playback + thumbnails while suppressing ad/measurement paths.
+! Tip: Put this list ABOVE other lists so the @@ exceptions always win.
+! -------------------------------------------------------------------------
+! === 0) ESSENTIAL ALLOWS (device control / entitlement) ===
+@@||ichnaea.netflix.com^
+@@||metrics.netflix.com^
+@@||nrdp.prod.cloud.netflix.com^
+! === 1) PARTNER NETWORK — block only known ad/ingestion endpoints ===
+||preapp.prod.partner.netflix.net^
+/^nflx-android-tv\.prod\.partner\.netflix\.net$/
+! === 2) DELIVERY PATH — steer away from IPv4 OCAs (often where ad segments ride) ===
+! Covers standard + env-tagged variants (e.g., -dev-, -prd)
+/^ipv4-c\d{1,4}-[a-z]{3}\d{3}(-[a-z]{3,5})?-[a-z0-9]{2}\.\d+\.oca\.nflxvideo\.net$/
+! === 3) OCC (Open Connect Control) — keep a known UI/metadata node allowed ===
+@@/^occ-0-90-92\.1\.nflxso\.net$/
+! === 4) r.nflxso.net — ad-manifest & measurement (focused) ===
+! Pattern: random token + region (e.g., <longtoken>-us-east-2.r.nflxso.net)
+/^[a-z0-9-]{10,}-(us|eu|ap|sa|af|me)[a-z0-9-]*\.r\.nflxso\.net$/
+! Common cfu* variant:
+/^cfu[a-z0-9-]{6,}\.r\.nflxso\.net$/
+! === 5) DARNUID device/ad attribution (UUID FQDNs) ===
+! Exact UUID before .darnuid.netflix.com (8-4-4-4-12 lowercase hex)
+/^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\.darnuid\.netflix\.com$/
+! === 6) Telemetry / crash logging (safe to block) ===
+||logs.netflix.com^
+||sessions.bugsnag.com^
+||notify.bugsnag.com^
+||api.bugsnag.com^
+! --- ADDED HIGH-VOLUME/NEWER TELEMETRY DOMAINS ---
+||customerevents.netflix.com^
+||appboot.netflix.com^
+! -------------------------------------------------------------------------
+! OPTIONAL / TEST TAIL (commented) — advanced users only
+! -------------------------------------------------------------------------
+! OCC ad-decision tiers (may affect thumbnails):
+! /^occ-[0-9-]+\.[2-9]\.nflxso\.net$/
+! Discovery only (no blocking): surface subdomains in logs for analysis:
+! ||partner.netflix.net^$dnstype=ANY,important
+! ||r.nflxso.net^$dnstype=ANY,important
+! ||nflxvideo.net^$dnstype=ANY,important
+! ||darnuid.netflix.com^$dnstype=ANY,important
