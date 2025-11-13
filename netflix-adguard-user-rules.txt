@@ -12,7 +12,6 @@
 /^nflx-android-tv\.prod\.partner\.netflix\.net$/
 ! === 2) DELIVERY PATH — steer away from IPv4 / IPv6 DEV OCAs (often where ad segments ride) ===
 ! IPv4 OCAs — covers standard + env-tagged variants (e.g., -dev-, -prd)
-/^ipv4-c\d{1,4}-[a-z]{3}\d{3}(-[a-z]{3,5})?-[a-z0-9]{2}\.\d+\.oca\.nflxvideo\.net$/
 @@/^ipv4-c\d{1,4}-(ord|was|iad|lax|dfw|atl)\d{3}(-prd)?-[a-z0-9]{2}.\d+.oca.nflxvideo.net$/
 ! IPv6 DEV OCAs — test/dev nodes (e.g., ipv6-c158-ord001-dev-ix.1.oca.nflxvideo.net)
 /^ipv6-c\d{1,4}-[a-z]{3}\d{3}-dev-[a-z0-9]{2}\.\d+\.oca\.nflxvideo\.net$/
@@ -42,4 +41,4 @@
 ! ||partner.netflix.net^$dnstype=ANY,important
 ! ||r.nflxso.net^$dnstype=ANY,important
 ! ||nflxvideo.net^$dnstype=ANY,important
-! ||darnuid.netflix.com^$dnstype=ANY,important
+
