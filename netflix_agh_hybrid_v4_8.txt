@@ -1,0 +1,49 @@
+
+# AGH/FLINT 2 HYBRID v4.5 (Cleaned + Structured + Safe)
+
+# 1) SAFETY ALLOWLIST (Prevents playback failure)
+@@||android.prod.ftl.netflix.com^
+@@||android12.prod.cloud.netflix.com^
+@@||android12.ws.prod.cloud.netflix.com^
+@@||android.prod.cloud.netflix.com^
+@@||api-global.netflix.com^
+@@||ichnaea.netflix.com^
+@@||nq.ssl.netflix.com^
+
+# 2) TELEMETRY + AD/SURVEY BLOCK
+||logs.netflix.com^
+||ichnaea.netflix.com^$important
+||secure.netflix.com^$important
+||android.prod.cloud.netflix.com^$important
+||android12.push.prod.netflix.com^$important
+||push.prod.netflix.com^$important
+||usage-reporting.netflix.com^
+||devices.cloud.netflix.com^
+||clients.profiles.netflix.com^
+
+# 3) WS + PUSH (Non‑essential negotiation endpoints)
+||android12.push.prod.netflix.com^
+||push.prod.netflix.com^
+||prod.ws.netflix.com^
+||ws.pip.netflix.com^
+
+# 4) DRADIS BLOCK (High‑confidence ad segments)
+||prod-*-dradis.netflix.com^
+||dradis.netflix.com^
+||pushy-prod-nlb*.elb.amazonaws.com^
+
+# 5) OCC CDN BLOCK (Ad/media injection hosts)
+||occ-*.nflxvideo.net^
+
+# 6) PLAYBACK CDN SAFE (ALLOW real video shards)
+@@||*.oca.nflxvideo.net^
+
+# 7) ANDROID FTL BYPASS — REQUIRED
+@@||android.prod.ftl.netflix.com^
+@@||mobile-ixanycast.ftl.netflix.com^
+
+
+! --- AGH / Flint 2 – v4.8 additions ---
+! New safe blocks: Darwin UUID telemetry + Android Android-cloud policy resolver
+||darwin.netflix.com^
+||android*.prod.cloud.netflix.com^
