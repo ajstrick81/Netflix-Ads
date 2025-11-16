@@ -1,0 +1,64 @@
+# NETFLIX ANDROID HYBRID v4.8
+# AdGuard / uBO-style syntax – Android app + FTL safe, telemetry minimized
+
+# 1) SAFETY ALLOWLIST (core control / playback)
+@@||android.prod.ftl.netflix.com^
+@@||www.prod.ftl.netflix.com^
+@@||android12.prod.cloud.netflix.com^
+@@||android12.ws.prod.cloud.netflix.com^
+@@||android.prod.cloud.netflix.com^
+@@||api-global.netflix.com^
+@@||ichnaea.netflix.com^
+@@||nq.ssl.netflix.com^
+@@||mobile-ixanycast.ftl.netflix.com^
+@@||*.oca.nflxvideo.net^
+
+# 2) NETFLIX TELEMETRY / LOGGING
+||logs.netflix.com^
+||ichnaea.netflix.com^$important
+||secure.netflix.com^$important
+
+# Extra telemetry / trackers we’ve seen in your logs
+||browser-intake-datadoghq.com^
+||mh.bf.contentsquare.net^
+||bf.contentsquare.net^
+||c1eccb73-*.darwin.contentsquare.net^
+||config.claspws.tv^
+||mh.bf.contentsquare.net^
+||mh.bf.contentsquare.net^$important
+
+# 3) DRADIS / PUSH BACKEND (diagnostics & notifications)
+||prod-*-dradis.netflix.com^
+||dradis.netflix.com^
+||pushy-prod-nlb*.elb.amazonaws.com^
+||dradis.netflix.com^
+||prod.dradis.netflix.com^
+||partner.dradis.netflix.com^
+||*.partner.dradis.netflix.com^
+||internal.dradis.netflix.com^
+||*.internal.dradis.netflix.com^
+||nrdp.prod.dradis.netflix.com^
+||android.prod.dradis.netflix.com^
+||androidtv.prod.dradis.netflix.com^
+||api-global.dradis.netflix.com^
+||api-global.prod.dradis.netflix.com^
+
+! AWS telemetry relays
+||apiproxy-partner-prod-nlb-*.elb.us-east-2.amazonaws.com^
+||apiproxy-device-prod-nlb-*.elb.us-east-2.amazonaws.com^
+||apiproxy-nrdp-prod-nlb-*.elb.us-east-2.amazonaws.com^
+
+! Full partner endpoint
+||nflx-android-tv.prod.partner.netflix.net^
+||*.prod.partner.netflix.net^
+
+# 4) OCC / MEDIA AUX (conservative – only nflxvideo “occ”)
+# Note: we *don’t* touch occ-*.nflxso.net here to avoid risking CDN issues.
+||occ-*.nflxvideo.net^
+
+# 5) PLAYBACK CDN SAFE (redundant safety, but harmless)
+@@||*.oca.nflxvideo.net^
+
+# 6) FTL BYPASS – REQUIRED FOR THUMBNAILS & STARTUP
+@@||android.prod.ftl.netflix.com^
+@@||mobile-ixanycast.ftl.netflix.com^
