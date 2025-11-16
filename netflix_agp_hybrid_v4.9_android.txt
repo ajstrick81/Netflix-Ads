@@ -103,12 +103,8 @@
 @@||nflximg.net^
 @@||nflxso.net^
 @@||nflxext.com^
-@@||netflix.com^
-@@||cloud.netflix.com^
-@@||prod.cloud.netflix.com^
-@@||ws.prod.cloud.netflix.com^
-@@||androidtv.prod.cloud.netflix.com^
 
 ###############
 # END OF FILE v4.9 (AGP DEVICE PACK – ENHANCED)
 ###############
+
