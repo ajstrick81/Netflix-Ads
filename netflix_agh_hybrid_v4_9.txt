@@ -2,7 +2,11 @@
 # NETFLIX ADGUARD PREMIUM DEVICE PACK v4.9 (ENHANCED)
 # Optimized for Onn 4K TV (Android TV) + AGH hybrid
 ###############
-
+###DO NOT BLOCK LIST on AdGuard Home - Must be blocked via HTTPS on AdGuard Premium App###
+@@||api-global.netflix.com^$important
+@@||push.prod.netflix.com^$important
+@@||nrdp.prod.cloud.netflix.com^$important
+@@||nrdp.ws.prod.cloud.netflix.com^$important
 ## 0) HIGH-LEVERAGE AD MANIFEST / DECISION NULLING
 # Goal: neuter ad segments in NRDP / device manifests before
 # they ever reach the player. Extra $replace rules are safe:
