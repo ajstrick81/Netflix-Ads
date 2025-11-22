@@ -86,7 +86,6 @@
 ########################################################
 ## 5) DO NOT BLOCK — REQUIRED FOR PLAYBACK (EXPLICIT ALLOW)
 ########################################################
-@@||nflximg.net
 @@||api-global.netflix.com^
 @@||nrdp.prod.cloud.netflix.com^
 @@||netflix.com^$generichide
@@ -108,3 +107,4 @@
 ###############
 # END OF FILE v4.10 (AGH DEVICE PACK – ENHANCED)
 ###############
+
