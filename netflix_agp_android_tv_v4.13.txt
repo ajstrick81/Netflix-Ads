@@ -1,0 +1,75 @@
+! ============================================================
+! NETFLIX — ADGUARD PREMIUM (AGP)
+! ANDROID TV (Onn 4K / Google TV) — SSAI-AWARE RULESET
+! Version: v4.13-AGP-ONN (2025-12-28)
+! Intended use: AdGuard Premium / AdGuard for Android with HTTPS filtering
+!
+! Highlights:
+!  - Preserve core playback/control-plane connectivity
+!  - Soften telemetry with $empty to reduce retry loops & SSAI reinforcement
+!  - Optional (commented) manifest param stripping for cautious mid-roll nudging
+!
+! Notes:
+!  - This file is NOT for AdGuard Home (DNS-only).
+!  - Enable HTTPS filtering for best effect.
+! ============================================================
+
+! ------------------------------------------------------------
+! 1) CORE PLAYBACK — NEVER BLOCK
+! ------------------------------------------------------------
+@@||nflxvideo.net^
+@@||nflxso.net^
+@@||nflxext.com^
+
+@@||prod.cloud.netflix.com^
+@@||androidtv.prod.cloud.netflix.com^
+@@||android12.prod.cloud.netflix.com^
+@@||web.prod.cloud.netflix.com^
+
+@@||nflx-android-tv.prod.partner.netflix.net^
+
+! ------------------------------------------------------------
+! 2) TELEMETRY — SOFTEN (CRITICAL)
+! $empty returns a successful response with no payload.
+! This reduces infinite retry loops and can lower SSAI ad pressure.
+! ------------------------------------------------------------
+||android12.logs.netflix.com^$empty
+||logs.netflix.com^$empty
+
+||ichnaea.netflix.com^$empty
+||ichnaea-web.netflix.com^$empty
+
+! ------------------------------------------------------------
+! 3) SESSION / DEVICE SIGNALING — KEEP WORKING
+! ------------------------------------------------------------
+@@||android12.push.prod.netflix.com^
+@@||darnuid.netflix.com^
+
+! ------------------------------------------------------------
+! 4) STABILITY SOFTENERS (SAFE)
+! These are non-essential diagnostics/perf endpoints.
+! ------------------------------------------------------------
+||ingest.sentry.io^$empty
+||mobile-collector.newrelic.com^$empty
+
+! ------------------------------------------------------------
+! 5) EXPERIMENTAL — MID-ROLL NUDGING (AGP ONLY)
+! Enable ONE at a time. Test. Revert immediately if buffering occurs.
+! ------------------------------------------------------------
+*netflix.com/playapi/cadmium/manifest/*$removeparam=adBreak
+! Still testing these
+! *netflix.com/playapi/cadmium/manifest/*$removeparam=ad_break
+! *netflix.com/playapi/cadmium/manifest/*$removeparam=adTag
+! *netflix.com/playapi/cadmium/manifest/*$removeparam=trackingToken
+
+! ------------------------------------------------------------
+! 6) DO NOT ENABLE (DOCUMENTATION)
+! These will break playback or increase SSAI aggression.
+! ------------------------------------------------------------
+! ||prod.cloud.netflix.com^
+! ||nflxvideo.net^
+! ||netflix.com/playapi/cadmium/^
+
+! ============================================================
+! END NETFLIX — AGP ANDROID TV RULESET
+! ============================================================
