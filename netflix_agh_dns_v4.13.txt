@@ -1,0 +1,70 @@
+! ============================================================
+! NETFLIX — ADGUARD HOME (DNS-ONLY)
+! v4.13 — MID-ROLL AWARE / STABILITY-FIRST
+! USED IN CONJUCTION WITH ADGUARD PREMIUM APP - ONN TV 4K PLUS
+! Derived from HAR analysis (pre-roll + mid-roll SSAI behavior)
+! NOTE: DNS-only cannot eliminate SSAI ads; goal is to
+!       reduce reinsertion pressure and catch edge mid-rolls.
+! ============================================================
+
+! ------------------------------------------------------------
+! 1) CORE VIDEO & PLAYBACK — MUST ALLOW
+! ------------------------------------------------------------
+@@||nflxvideo.net^
+@@||nflxso.net^
+@@||nflxext.com^
+
+! ------------------------------------------------------------
+! 2) CORE CONTROL PLANE — MUST ALLOW
+! ------------------------------------------------------------
+@@||prod.cloud.netflix.com^
+@@||android12.prod.cloud.netflix.com^
+@@||androidtv.prod.cloud.netflix.com^
+@@||web.prod.cloud.netflix.com^
+
+! ------------------------------------------------------------
+! 3) PARTNER / CERTIFIED ANDROID TV ENDPOINTS
+! ------------------------------------------------------------
+@@||nflx-android-tv.prod.partner.netflix.net^
+
+! ------------------------------------------------------------
+! 4) TELEMETRY — DNS-ONLY REALITY
+! Hard blocking causes retries & reinsertion.
+! Allow to preserve stability and avoid SSAI escalation.
+! ------------------------------------------------------------
+@@||logs.netflix.com^
+@@||android12.logs.netflix.com^
+@@||ichnaea.netflix.com^
+@@||ichnaea-web.netflix.com^
+
+! ------------------------------------------------------------
+! 5) DEVICE / SESSION SIGNALING
+! ------------------------------------------------------------
+@@||android12.push.prod.netflix.com^
+@@||darnuid.netflix.com^
+
+! ------------------------------------------------------------
+! 6) FAST-LANE / DRADIS ROUTING CONSISTENCY
+! ------------------------------------------------------------
+@@||mobile-ixanycast.ftl.netflix.com^
+
+! ------------------------------------------------------------
+! 7) OPTIONAL — EDGE MID-ROLL NUDGING (DNS-ONLY)
+! These do NOT kill ads, but may prevent fallback reinsertion
+! or secondary routing used during mid-roll recovery.
+! Enable ONLY if playback remains stable.
+! ------------------------------------------------------------
+||flxvideo.net^
+||flxso.net^
+||flxext.com^
+
+! ------------------------------------------------------------
+! 8) OPTIONAL / LAST-RESORT CDN AD HOSTS
+! REGION-SENSITIVE — MAY BREAK PLAYBACK
+! ------------------------------------------------------------
+||ad.akamaized.net^
+||ads.akamaized.net^
+
+! ============================================================
+! END NETFLIX — AGH DNS-ONLY v4.13
+! ============================================================
