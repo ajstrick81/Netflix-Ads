@@ -57,10 +57,9 @@
 ! Enable ONE at a time. Test. Revert immediately if buffering occurs.
 ! ------------------------------------------------------------
 *netflix.com/playapi/cadmium/manifest/*$removeparam=adBreak
-! Still testing these
-! *netflix.com/playapi/cadmium/manifest/*$removeparam=ad_break
-! *netflix.com/playapi/cadmium/manifest/*$removeparam=adTag
-! *netflix.com/playapi/cadmium/manifest/*$removeparam=trackingToken
+*netflix.com/playapi/cadmium/manifest/*$removeparam=ad_break
+*netflix.com/playapi/cadmium/manifest/*$removeparam=adTag
+*netflix.com/playapi/cadmium/manifest/*$removeparam=trackingToken
 
 ! ------------------------------------------------------------
 ! 6) DO NOT ENABLE (DOCUMENTATION)
