@@ -1,17 +1,20 @@
 ! ============================================================
 ! NETFLIX — ADGUARD PREMIUM (AGP)
 ! ANDROID TV (Onn 4K / Google TV) — SSAI-AWARE RULESET
-! Version: v4.13-AGP-ONN (2025-12-28)
+! Version: v4.14-AGP-ONN (2026-03-15)
 ! Intended use: AdGuard Premium / AdGuard for Android with HTTPS filtering
 !
 ! Highlights:
 !  - Preserve core playback/control-plane connectivity
 !  - Soften telemetry with $empty to reduce retry loops & SSAI reinforcement
-!  - Optional (commented) manifest param stripping for cautious mid-roll nudging
+!  - darnuid softened via $empty to disrupt ad targeting ID without retries
+!  - Expanded $removeparam manifest stripping for ad break nudging
+!  - licensedmanifest endpoint also covered for complete manifest coverage
 !
 ! Notes:
 !  - This file is NOT for AdGuard Home (DNS-only).
 !  - Enable HTTPS filtering for best effect.
+!  - Test $removeparam rules one at a time — revert if buffering occurs.
 ! ============================================================
 
 ! ------------------------------------------------------------
@@ -31,7 +34,7 @@
 ! ------------------------------------------------------------
 ! 2) TELEMETRY — SOFTEN (CRITICAL)
 ! $empty returns a successful response with no payload.
-! This reduces infinite retry loops and can lower SSAI ad pressure.
+! This reduces infinite retry loops and lowers SSAI ad pressure.
 ! ------------------------------------------------------------
 ||android12.logs.netflix.com^$empty
 ||logs.netflix.com^$empty
@@ -40,35 +43,58 @@
 ||ichnaea-web.netflix.com^$empty
 
 ! ------------------------------------------------------------
-! 3) SESSION / DEVICE SIGNALING — KEEP WORKING
+! 3) DEVICE AD TARGETING — SOFTEN
+! darnuid = Device Ad Ready Netflix UID
+! Returns success so no retry loop, but sends no device ID
+! preventing targeted ad delivery without triggering SSAI escalation
 ! ------------------------------------------------------------
-@@||android12.push.prod.netflix.com^
-@@||darnuid.netflix.com^
+||darnuid.netflix.com^$empty
 
 ! ------------------------------------------------------------
-! 4) STABILITY SOFTENERS (SAFE)
-! These are non-essential diagnostics/perf endpoints.
+! 4) SESSION / DEVICE SIGNALING — KEEP WORKING
+! ------------------------------------------------------------
+@@||android12.push.prod.netflix.com^
+
+! ------------------------------------------------------------
+! 5) STABILITY SOFTENERS (SAFE)
+! Non-essential diagnostics/performance endpoints
 ! ------------------------------------------------------------
 ||ingest.sentry.io^$empty
 ||mobile-collector.newrelic.com^$empty
 
 ! ------------------------------------------------------------
-! 5) EXPERIMENTAL — MID-ROLL NUDGING (AGP ONLY)
-! Enable ONE at a time. Test. Revert immediately if buffering occurs.
+! 6) MANIFEST PARAMETER STRIPPING — MID-ROLL NUDGING
+! Removes ad-related parameters from manifest requests before
+! they reach Netflix servers — may reduce ad slot injection
+! AGP HTTPS filtering must be enabled for these to work
+! Test one at a time — revert immediately if buffering occurs
 ! ------------------------------------------------------------
 *netflix.com/playapi/cadmium/manifest/*$removeparam=adBreak
 *netflix.com/playapi/cadmium/manifest/*$removeparam=ad_break
 *netflix.com/playapi/cadmium/manifest/*$removeparam=adTag
 *netflix.com/playapi/cadmium/manifest/*$removeparam=trackingToken
+*netflix.com/playapi/cadmium/manifest/*$removeparam=adPosition
+*netflix.com/playapi/cadmium/manifest/*$removeparam=adModel
+*netflix.com/playapi/cadmium/manifest/*$removeparam=adTier
+
+! licensedmanifest endpoint — same param stripping
+*netflix.com/playapi/cadmium/licensedmanifest/*$removeparam=adBreak
+*netflix.com/playapi/cadmium/licensedmanifest/*$removeparam=ad_break
+*netflix.com/playapi/cadmium/licensedmanifest/*$removeparam=adTag
+*netflix.com/playapi/cadmium/licensedmanifest/*$removeparam=trackingToken
+*netflix.com/playapi/cadmium/licensedmanifest/*$removeparam=adPosition
+*netflix.com/playapi/cadmium/licensedmanifest/*$removeparam=adModel
+*netflix.com/playapi/cadmium/licensedmanifest/*$removeparam=adTier
 
 ! ------------------------------------------------------------
-! 6) DO NOT ENABLE (DOCUMENTATION)
-! These will break playback or increase SSAI aggression.
+! 7) DO NOT ENABLE (DOCUMENTATION)
+! These will break playback or increase SSAI aggression
 ! ------------------------------------------------------------
 ! ||prod.cloud.netflix.com^
 ! ||nflxvideo.net^
 ! ||netflix.com/playapi/cadmium/^
+! ||darnuid.netflix.com^ (hard block — use $empty above instead)
 
 ! ============================================================
-! END NETFLIX — AGP ANDROID TV RULESET
+! END NETFLIX — AGP ANDROID TV v4.14
 ! ============================================================
