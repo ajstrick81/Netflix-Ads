@@ -1,10 +1,11 @@
 ! ============================================================
 ! NETFLIX — ADGUARD HOME (DNS-ONLY)
-! v4.13 — MID-ROLL AWARE / STABILITY-FIRST
-! USED IN CONJUCTION WITH ADGUARD PREMIUM APP - ONN TV 4K PLUS
+! v4.14 — MID-ROLL AWARE / STABILITY-FIRST
+! USED IN CONJUNCTION WITH ADGUARD PREMIUM APP - ONN TV 4K PLUS
 ! Derived from HAR analysis (pre-roll + mid-roll SSAI behavior)
 ! NOTE: DNS-only cannot eliminate SSAI ads; goal is to
 !       reduce reinsertion pressure and catch edge mid-rolls.
+! Updated: 2026-03-15
 ! ============================================================
 
 ! ------------------------------------------------------------
@@ -31,6 +32,7 @@
 ! 4) TELEMETRY — DNS-ONLY REALITY
 ! Hard blocking causes retries & reinsertion.
 ! Allow to preserve stability and avoid SSAI escalation.
+! AGP handles these more surgically via $empty (see AGP ruleset)
 ! ------------------------------------------------------------
 @@||logs.netflix.com^
 @@||android12.logs.netflix.com^
@@ -39,6 +41,8 @@
 
 ! ------------------------------------------------------------
 ! 5) DEVICE / SESSION SIGNALING
+! darnuid = Device Ad Ready Netflix UID (ad targeting identifier)
+! Allowed at DNS level — AGP handles more surgically via $empty
 ! ------------------------------------------------------------
 @@||android12.push.prod.netflix.com^
 @@||darnuid.netflix.com^
@@ -61,10 +65,11 @@
 ! ------------------------------------------------------------
 ! 8) OPTIONAL / LAST-RESORT CDN AD HOSTS
 ! REGION-SENSITIVE — MAY BREAK PLAYBACK
+! Convert to $dnsrewrite=0.0.0.0 if hard block causes issues
 ! ------------------------------------------------------------
-||ad.akamaized.net^
-||ads.akamaized.net^
+||ad.akamaized.net^$dnsrewrite=0.0.0.0
+||ads.akamaized.net^$dnsrewrite=0.0.0.0
 
 ! ============================================================
-! END NETFLIX — AGH DNS-ONLY v4.13
+! END NETFLIX — AGH DNS-ONLY v4.14
 ! ============================================================
